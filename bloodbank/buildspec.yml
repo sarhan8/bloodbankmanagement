@@ -1,0 +1,21 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+  build:
+    commands:
+      - echo Building Docker frontend image...
+      - docker build -t 817655522785.dkr.ecr.ca-central-1.amazonaws.com/bloodbank:frontend -f ./frontend/Dockerfile .
+      - echo Building the Docker image...
+      - docker build -t 817655522785.dkr.ecr.ca-central-1.amazonaws.com/bloodbank:backend -f ./backend/Dockerfile .
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 817655522785.dkr.ecr.ca-central-1.amazonaws.com/bloodbank:frontend
+      - docker push 817655522785.dkr.ecr.ca-central-1.amazonaws.com/bloodbank:backend

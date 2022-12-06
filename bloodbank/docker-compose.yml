@@ -1,0 +1,22 @@
+version: "3.2"
+services:
+  frontend:
+    image: "817655522785.dkr.ecr.ca-central-1.amazonaws.com/bloodbank:frontend"
+    ports:
+      - "80:3000"
+    depends_on:
+      - db
+  backend:
+    image: "817655522785.dkr.ecr.ca-central-1.amazonaws.com/bloodbank:backend"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+  db:
+    volumes:
+      - db:/data/db
+    image: "mongo:latest"
+    ports:
+      - "27017:27017" 
+volumes:
+   db:
